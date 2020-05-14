@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "SDLChess",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "-o", 
+                "Chess",
+                "Main.cpp",  
+                "Screen.cpp",        
+                "-lmingw32",
+                "-lSDL2main",
+                "-lSDL2",
+                "-IE:\\Workspace\\CppWorkspace\\SDL2-2.0.10\\x86_64-w64-mingw32\\include",
+                "-LE:\\Workspace\\CppWorkspace\\SDL2-2.0.10\\x86_64-w64-mingw32\\lib",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
