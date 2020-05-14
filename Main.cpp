@@ -10,6 +10,9 @@ int main(int argc, char *argv[]) {
     }
     bool flag = false;
     SDL_Event event;
+    for (int i = 0; i < 10; i++) {
+        cout << " Hello world !" << endl;
+    }
     while (!flag) {     
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
