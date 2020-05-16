@@ -3,9 +3,11 @@
 #include <SDL2/SDL.h>
 #include <memory>
 #include <SDL2/SDL_image.h>
+#include "Board.h"
 
 class Screen {
 private:
+    Board board;
     SDL_Window *m_window;
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture;

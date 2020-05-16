@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include "Board.h"
 
 using namespace std;
 
@@ -11,7 +12,10 @@ Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(
 Screen::~Screen() {
 
 }
+
 bool Screen::init() {
+
+    // Screen initialization
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         return false;
     }
@@ -42,12 +46,25 @@ bool Screen::init() {
         cout << "Failed to initialise SDL_image for PNG" << endl;
         return false;
     }
+    // Setting the board
     SetBoard();
     return true;
 }
 void Screen::close() {
     delete[] m_buffer1;
     delete[] m_buffer2;
+    SDL_DestroyTexture(bB);
+    SDL_DestroyTexture(bQ);
+    SDL_DestroyTexture(bK);
+    SDL_DestroyTexture(bP);
+    SDL_DestroyTexture(bR);
+    SDL_DestroyTexture(bN);
+    SDL_DestroyTexture(wB);
+    SDL_DestroyTexture(wQ);
+    SDL_DestroyTexture(wK);
+    SDL_DestroyTexture(wP);
+    SDL_DestroyTexture(wR);
+    SDL_DestroyTexture(wN);
     SDL_DestroyTexture(m_texture);
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
@@ -83,6 +100,8 @@ void Screen::update() {
 }
 
 void Screen::SetBoard() {
+    
+    //Graphical initialization of the board
     m_buffer1 = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH];
     Uint32 col = Color(80,151,53);
     for (int i = 0; i < SCREEN_HEIGHT * SCREEN_WIDTH; i++) {
@@ -115,20 +134,7 @@ void Screen::SetBoard() {
 
     loadPNG();
     renderPieces();
-    
-    
-    
     SDL_RenderPresent(m_renderer);
-
-
-    // m_destination.x += 25;
-    // m_destination.y += 25;
-    // SDL_RenderPresent(m_renderer);
-
-    // SDL_DestroyTexture(test_texture);
- 
-
-    //update();
 }
 
 void Screen::drawSquare(int x, int y, int size, Uint8 red, Uint8 green, Uint8 blue) {
