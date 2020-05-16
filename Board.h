@@ -12,17 +12,18 @@ public:
     ~Board();
     void setData();
     
+    //Special struct for storing each spot information
     struct boardData {
-        int x;
+        int x; 
         int y;
         bool occupied;
-        int occpuiedType;
+        int occpuiedBy;
 
         boardData(){
             x = 0;
             y = 0;
             occupied = 0;
-            occpuiedType = 0;
+            occpuiedBy = 0;
         }
     };
     boardData *panel;
