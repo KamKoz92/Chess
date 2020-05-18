@@ -331,10 +331,55 @@ void Screen::updateSelection(int x, int y) {
     int temp = board.returnSpot(x,y);
     if(selectedSquare != temp) {
         selectedSquare = temp;
-        board.panel[selectedSquare].occpuiedBy;
+        getPieceTexture(board.panel[selectedSquare].occpuiedBy);
+        
     }
     else {
         return;
     }
 
+}
+SDL_Texture* Screen::getPieceTexture(int type) {
+    switch (type)
+    {
+    case 1:
+        return wK;
+        break;
+    case 2:
+        return wQ;
+        break;
+    case 3:
+        return wB;
+        break;
+    case 4:
+        return wN;
+        break;
+    case 5:
+        return wR;
+        break;
+    case 6:
+        return wP;
+        break;
+    case -1:
+        return bK;
+        break;  
+    case -2:
+        return bQ;
+        break;
+    case -3:
+        return bB;
+        break;
+    case -4:
+        return bN;
+        break;
+    case -5:
+        return bR;
+        break;
+    case -6:
+        return bP;
+        break;  
+    default:
+        cout << " Wrong piece texture number" << endl;
+        break;
+    }
 }

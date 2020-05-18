@@ -45,6 +45,7 @@ public:
     void loadPNG();
     void renderPieces();
     void updateSelection(int x, int y);
+    SDL_Texture* getPieceTexture(int type);
 };
 
 #endif /* SCREEN_H */
