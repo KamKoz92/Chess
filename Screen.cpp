@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL) {
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(0) {
 
 }
 Screen::~Screen() {
@@ -97,6 +97,8 @@ void Screen::update() {
     SDL_RenderClear(m_renderer);
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
     SDL_RenderPresent(m_renderer);
+
+    
 }
 
 void Screen::SetBoard() {
@@ -131,7 +133,6 @@ void Screen::SetBoard() {
     SDL_UpdateTexture(m_texture, NULL, m_buffer1, SCREEN_WIDTH * sizeof(Uint32));
     SDL_RenderClear(m_renderer);
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
-
     loadPNG();
     renderPieces();
     SDL_RenderPresent(m_renderer);
@@ -325,6 +326,15 @@ void Screen::renderPieces() {
 
     m_destination.x += 100;
     SDL_RenderCopy(m_renderer, wP, NULL, &m_destination);
-
+}
+void Screen::updateSelection(int x, int y) {
+    int temp = board.returnSpot(x,y);
+    if(selectedSquare != temp) {
+        selectedSquare = temp;
+        board.panel[selectedSquare].occpuiedBy;
+    }
+    else {
+        return;
+    }
 
 }

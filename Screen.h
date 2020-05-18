@@ -6,6 +6,8 @@
 #include "Board.h"
 
 class Screen {
+public:
+    
 private:
     Board board;
     SDL_Window *m_window;
@@ -25,6 +27,7 @@ private:
     SDL_Texture *wP;
     SDL_Texture *wQ;
     SDL_Texture *wR;
+    int selectedSquare;
 
 public:
     const static int SCREEN_HEIGHT = 840;
@@ -41,6 +44,7 @@ public:
     int Color(Uint8 r, Uint8 g, Uint8 b);
     void loadPNG();
     void renderPieces();
+    void updateSelection(int x, int y);
 };
 
 #endif /* SCREEN_H */
