@@ -6,9 +6,11 @@
 
 using namespace std;
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(0) {
-    updateRect.h = 100;
-    updateRect.w = 100;
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1) {
+    updateRectBoard.h = 100;
+    updateRectBoard.w = 100;
+    updateRectPiece.h = 80;
+    updateRectPiece.w = 80;
 }
 
 
@@ -347,14 +349,34 @@ void Screen::updateSelection(int x, int y) {
     int temp = board.returnSpot(x-20,y-20);
     if(temp != -1) {
         if(selectedSquare != temp) {
+            prevSquare = selectedSquare;
             selectedSquare = temp;
-            updateRect.x = board.panel[temp].x;
-            updateRect.y = board.panel[temp].y;
-            SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRect);
+
+            updateRectBoard.x = board.panel[selectedSquare].x;
+            updateRectBoard.y = board.panel[selectedSquare].y;
+            SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRectBoard);
             tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
             if(tempTexture2 != NULL) {
-                SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRect);
+                updateRectPiece.x = updateRectBoard.x + 10;
+                updateRectPiece.y = updateRectBoard.y + 10;
+                SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
             }
+
+            if(prevSquare != -1) {
+                updateRectBoard.x = board.panel[prevSquare].x;
+                updateRectBoard.y = board.panel[prevSquare].y;
+                SDL_RenderCopy(m_renderer, m_texture, &updateRectBoard, &updateRectBoard);
+                tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
+                if(tempTexture2 != NULL) {
+                    updateRectPiece.x = updateRectBoard.x + 10;
+                    updateRectPiece.y = updateRectBoard.y + 10;
+                    SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
+                }
+            }
+            
+
+
+
             SDL_RenderPresent(m_renderer);
         }
     }

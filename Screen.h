@@ -28,9 +28,11 @@ private:
     SDL_Texture *wQ;
     SDL_Texture *wR;
     int selectedSquare;
+    int prevSquare;
     SDL_Texture *tempTexture1;
     SDL_Texture *tempTexture2;
-    SDL_Rect updateRect;
+    SDL_Rect updateRectBoard;
+    SDL_Rect updateRectPiece;
 
 public:
     const static int SCREEN_HEIGHT = 840;
