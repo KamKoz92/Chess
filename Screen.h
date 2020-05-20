@@ -28,9 +28,11 @@ private:
     SDL_Texture *wQ;
     SDL_Texture *wR;
     int selectedSquare;
+    int prevSquare;
     SDL_Texture *tempTexture1;
     SDL_Texture *tempTexture2;
-    SDL_Rect updateRect;
+    SDL_Rect updateRectBoard;
+    SDL_Rect updateRectPiece;
 
 public:
     const static int SCREEN_HEIGHT = 840;
@@ -44,7 +46,7 @@ public:
     void clear();
     void SetBoard();
     void drawSquare(int x, int y, int size, Uint8 red, Uint8 green, Uint8 blue);
-    int Color(Uint8 r, Uint8 g, Uint8 b);
+    Uint32 Color(Uint8 r, Uint8 g, Uint8 b);
     void loadPNG();
     void renderPieces();
     void updateSelection(int x, int y);
