@@ -16,10 +16,8 @@ int main(int argc, char *argv[]) {
             if (event.type == SDL_QUIT) {
                 flag = true;
             }
-            else if(event.type == SDL_MOUSEMOTION)
-            {  
+            else if(event.type == SDL_MOUSEMOTION) {  
                 screen.updateSelection(event.motion.x,event.motion.y);
-               
             }
         }
     }

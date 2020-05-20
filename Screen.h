@@ -14,7 +14,7 @@ private:
     SDL_Renderer *m_renderer;
     SDL_Texture *m_texture;
     Uint32 *m_buffer1;
-    Uint32 *m_buffer2;
+    Uint32 *tempBuffer;
     SDL_Texture *bB;
     SDL_Texture *bK;
     SDL_Texture *bN;
@@ -28,6 +28,9 @@ private:
     SDL_Texture *wQ;
     SDL_Texture *wR;
     int selectedSquare;
+    SDL_Texture *tempTexture1;
+    SDL_Texture *tempTexture2;
+    SDL_Rect updateRect;
 
 public:
     const static int SCREEN_HEIGHT = 840;

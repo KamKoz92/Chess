@@ -7,8 +7,18 @@
 using namespace std;
 
 Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(0) {
-
+    updateRect.h = 100;
+    updateRect.w = 100;
+    // Uint32 *tempBuffer = new Uint32[10000];
+    // Uint32 c = Color(191,191,191);
+    // for (int i = 0; i < 10000; i++) {
+    //     tempBuffer[i] = c;
+    // }
+    // SDL_UpdateTexture(tempTexture1,NULL,tempBuffer,10000*sizeof(Uint32));
+    // delete[] tempBuffer;
 }
+
+
 Screen::~Screen() {
 
 }
@@ -52,7 +62,6 @@ bool Screen::init() {
 }
 void Screen::close() {
     delete[] m_buffer1;
-    delete[] m_buffer2;
     SDL_DestroyTexture(bB);
     SDL_DestroyTexture(bQ);
     SDL_DestroyTexture(bK);
@@ -66,6 +75,8 @@ void Screen::close() {
     SDL_DestroyTexture(wR);
     SDL_DestroyTexture(wN);
     SDL_DestroyTexture(m_texture);
+    SDL_DestroyTexture(tempTexture1);
+    SDL_DestroyTexture(tempTexture2);
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
@@ -91,6 +102,10 @@ int Screen::Color(Uint8 r, Uint8 g, Uint8 b) {
     color <<= 8;
     color += 0xFF;
     return color;
+    //Orange 255,151,53
+    //Green 80,151,53
+    //Marron 128,0,0
+    //Grey 191,191,191
 }
 void Screen::update() {
     SDL_UpdateTexture(m_texture, NULL, m_buffer1, SCREEN_WIDTH * sizeof(Uint32));
@@ -331,7 +346,14 @@ void Screen::updateSelection(int x, int y) {
     int temp = board.returnSpot(x,y);
     if(selectedSquare != temp) {
         selectedSquare = temp;
-        getPieceTexture(board.panel[selectedSquare].occpuiedBy);
+        updateRect.x = board.panel[temp].x;
+        updateRect.y = board.panel[temp].y;
+        // SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRect);
+        // tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
+        // if(tempTexture2 != NULL) {
+        //     SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRect);
+        // }
+
         
     }
     else {
@@ -380,6 +402,7 @@ SDL_Texture* Screen::getPieceTexture(int type) {
         break;  
     default:
         cout << " Wrong piece texture number" << endl;
+        return NULL;
         break;
     }
 }
