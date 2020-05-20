@@ -9,13 +9,6 @@ using namespace std;
 Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(0) {
     updateRect.h = 100;
     updateRect.w = 100;
-    // Uint32 *tempBuffer = new Uint32[10000];
-    // Uint32 c = Color(191,191,191);
-    // for (int i = 0; i < 10000; i++) {
-    //     tempBuffer[i] = c;
-    // }
-    // SDL_UpdateTexture(tempTexture1,NULL,tempBuffer,10000*sizeof(Uint32));
-    // delete[] tempBuffer;
 }
 
 
@@ -45,7 +38,11 @@ bool Screen::init() {
     }
 
     m_texture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, SCREEN_WIDTH, SCREEN_HEIGHT);
-    
+    tempTexture1 = SDL_CreateTexture(m_renderer,SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STATIC, 100, 100);
+
+    if (tempTexture1 == NULL)   {
+        cout << "Cannot create temp Texture!" << endl;
+    }
     if (m_texture == NULL) {
         SDL_DestroyRenderer(m_renderer);
         SDL_DestroyWindow(m_window);
@@ -62,6 +59,7 @@ bool Screen::init() {
 }
 void Screen::close() {
     delete[] m_buffer1;
+    delete[] tempBuffer;
     SDL_DestroyTexture(bB);
     SDL_DestroyTexture(bQ);
     SDL_DestroyTexture(bK);
@@ -92,7 +90,7 @@ void Screen::setPixel(int x, int y, Uint8 red, Uint8 green, Uint8 blue) {
     m_buffer1[(y * SCREEN_WIDTH) + x] = Color(red,green,blue);
 }
 
-int Screen::Color(Uint8 r, Uint8 g, Uint8 b) {
+Uint32 Screen::Color(Uint8 r, Uint8 g, Uint8 b) {
     Uint32 color = 0;
     color += r;
     color <<= 8;
@@ -112,12 +110,14 @@ void Screen::update() {
     SDL_RenderClear(m_renderer);
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
     SDL_RenderPresent(m_renderer);
-
-    
 }
 
 void Screen::SetBoard() {
-    
+    tempBuffer = new Uint32[10000];
+    Uint32 c = Color(191,191,191);
+    for (int i = 0; i < 10000; i++) {
+        tempBuffer[i] = c;
+    }
     //Graphical initialization of the board
     m_buffer1 = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH];
     Uint32 col = Color(80,151,53);
@@ -146,6 +146,7 @@ void Screen::SetBoard() {
         }
     }
     SDL_UpdateTexture(m_texture, NULL, m_buffer1, SCREEN_WIDTH * sizeof(Uint32));
+    SDL_UpdateTexture(tempTexture1, NULL, tempBuffer, 100 * sizeof(Uint32));
     SDL_RenderClear(m_renderer);
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
     loadPNG();
@@ -343,22 +344,21 @@ void Screen::renderPieces() {
     SDL_RenderCopy(m_renderer, wP, NULL, &m_destination);
 }
 void Screen::updateSelection(int x, int y) {
-    int temp = board.returnSpot(x,y);
-    if(selectedSquare != temp) {
-        selectedSquare = temp;
-        updateRect.x = board.panel[temp].x;
-        updateRect.y = board.panel[temp].y;
-        // SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRect);
-        // tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
-        // if(tempTexture2 != NULL) {
-        //     SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRect);
-        // }
-
-        
+    int temp = board.returnSpot(x-20,y-20);
+    if(temp != -1) {
+        if(selectedSquare != temp) {
+            selectedSquare = temp;
+            updateRect.x = board.panel[temp].x;
+            updateRect.y = board.panel[temp].y;
+            SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRect);
+            tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
+            if(tempTexture2 != NULL) {
+                SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRect);
+            }
+            SDL_RenderPresent(m_renderer);
+        }
     }
-    else {
-        return;
-    }
+    
 
 }
 SDL_Texture* Screen::getPieceTexture(int type) {
@@ -401,7 +401,6 @@ SDL_Texture* Screen::getPieceTexture(int type) {
         return bP;
         break;  
     default:
-        cout << " Wrong piece texture number" << endl;
         return NULL;
         break;
     }

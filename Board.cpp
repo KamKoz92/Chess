@@ -29,16 +29,16 @@ Board::Board() {
     //5 - while rook
     //6 - white pawn
     //black are the same but negative
-    panel[0].occpuiedBy = 5;
-    panel[1].occpuiedBy = 4;
-    panel[2].occpuiedBy = 3;
-    panel[3].occpuiedBy = 2;
-    panel[4].occpuiedBy = 1;
-    panel[5].occpuiedBy = 3;
-    panel[6].occpuiedBy = 4;
-    panel[7].occpuiedBy = 5;
+    panel[0].occpuiedBy = -5;
+    panel[1].occpuiedBy = -4;
+    panel[2].occpuiedBy = -3;
+    panel[3].occpuiedBy = -2;
+    panel[4].occpuiedBy = -1;
+    panel[5].occpuiedBy = -3;
+    panel[6].occpuiedBy = -4;
+    panel[7].occpuiedBy = -5;
     for (int i = 8; i < 16; i++) {
-        panel[i].occpuiedBy = 6;
+        panel[i].occpuiedBy = -6;
     }
     for (int i = 48; i < 56; i++) {
         panel[i].occpuiedBy = 6;
@@ -57,5 +57,10 @@ Board::~Board() {
 }
 int Board::returnSpot(int x, int y)
 {
-    return (y / 100)*8 + (x / 100);
+    if(x < 20 || x > 799 || y < 20 || y > 799) {
+        return -1;
+    }
+    else {
+        return (y / 100)*8 + (x / 100);
+    }
 }

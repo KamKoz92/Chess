@@ -44,7 +44,7 @@ public:
     void clear();
     void SetBoard();
     void drawSquare(int x, int y, int size, Uint8 red, Uint8 green, Uint8 blue);
-    int Color(Uint8 r, Uint8 g, Uint8 b);
+    Uint32 Color(Uint8 r, Uint8 g, Uint8 b);
     void loadPNG();
     void renderPieces();
     void updateSelection(int x, int y);

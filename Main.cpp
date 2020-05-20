@@ -15,6 +15,7 @@ int main(int argc, char *argv[]) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 flag = true;
+                break;
             }
             else if(event.type == SDL_MOUSEMOTION) {  
                 screen.updateSelection(event.motion.x,event.motion.y);
