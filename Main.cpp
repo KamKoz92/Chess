@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
             }
             else if(event.type == SDL_MOUSEMOTION) {  
                 screen.updateSelection(event.motion.x,event.motion.y);
+                cout << event.motion.x << ' ' << event.motion.y << endl;
             }
         }
     }

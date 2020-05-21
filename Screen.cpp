@@ -373,15 +373,23 @@ void Screen::updateSelection(int x, int y) {
                     SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
                 }
             }
-            
-
-
-
             SDL_RenderPresent(m_renderer);
         }
     }
-    
-
+    else if(temp == -1 && selectedSquare != -1) {
+        prevSquare = selectedSquare;
+        selectedSquare = temp;
+        updateRectBoard.x = board.panel[prevSquare].x;
+        updateRectBoard.y = board.panel[prevSquare].y;
+        SDL_RenderCopy(m_renderer, m_texture, &updateRectBoard, &updateRectBoard);
+        tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
+        if(tempTexture2 != NULL) {
+            updateRectPiece.x = updateRectBoard.x + 10;
+            updateRectPiece.y = updateRectBoard.y + 10;
+            SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
+        }
+        SDL_RenderPresent(m_renderer);
+    }
 }
 SDL_Texture* Screen::getPieceTexture(int type) {
     switch (type)
