@@ -33,10 +33,12 @@ private:
     SDL_Texture *tempTexture2;
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
+    
 
 public:
     const static int SCREEN_HEIGHT = 840;
     const static int SCREEN_WIDTH = 840;
+    bool mouseClick;
     Screen();
     ~Screen();
     bool init();
@@ -51,6 +53,7 @@ public:
     void renderPieces();
     void updateSelection(int x, int y);
     SDL_Texture* getPieceTexture(int type);
+    void movePiece(int x, int y);
 };
 
 #endif /* SCREEN_H */

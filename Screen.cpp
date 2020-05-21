@@ -6,13 +6,12 @@
 
 using namespace std;
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1) {
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false) {
     updateRectBoard.h = 100;
     updateRectBoard.w = 100;
     updateRectPiece.h = 80;
     updateRectPiece.w = 80;
 }
-
 
 Screen::~Screen() {
 
@@ -390,6 +389,13 @@ void Screen::updateSelection(int x, int y) {
         }
         SDL_RenderPresent(m_renderer);
     }
+}
+void Screen::movePiece(int x, int y) {
+    if(mouseClick) {
+        updateSelection(x,y);
+    }
+    mouseClick = !mouseClick;
+
 }
 SDL_Texture* Screen::getPieceTexture(int type) {
     switch (type)
