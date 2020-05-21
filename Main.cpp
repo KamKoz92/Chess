@@ -17,9 +17,13 @@ int main(int argc, char *argv[]) {
                 flag = true;
                 break;
             }
-            else if(event.type == SDL_MOUSEMOTION) {  
+            else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                if (event.button.button == SDL_BUTTON_LEFT) {
+
+                }
+            }
+            else if (event.type == SDL_MOUSEMOTION) {  
                 screen.updateSelection(event.motion.x,event.motion.y);
-                cout << event.motion.x << ' ' << event.motion.y << endl;
             }
         }
     }
