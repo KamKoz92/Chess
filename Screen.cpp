@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false), chessPieceHolded(0) {
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false), squareHolded(-1) {
     updateRectBoard.h = 100;
     updateRectBoard.w = 100;
     updateRectPiece.h = 80;
@@ -229,6 +229,140 @@ void Screen::loadPNG() {
     SDL_FreeSurface(imageSurface12);
 }
 
+
+void Screen::updateSelection(int x, int y) {
+    int temp = board.returnSpot(x-20,y-20);
+    if(temp != -1) {
+        if(selectedSquare != temp) {
+            prevSquare = selectedSquare;
+            selectedSquare = temp;
+            drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
+            tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
+            if(tempTexture2 != NULL) {
+                drawPiece(updateRectBoard.x,updateRectBoard.y,tempTexture2);
+            }
+
+            if(prevSquare != -1) {
+                drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
+                tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
+                if(tempTexture2 != NULL) {
+                    drawPiece(updateRectBoard.x,updateRectBoard.y,tempTexture2);
+                }
+            }
+            SDL_RenderPresent(m_renderer);
+        }
+    }
+    else if(temp == -1 && selectedSquare != -1) {
+        prevSquare = selectedSquare;
+        selectedSquare = temp;
+        drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
+        tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
+        if(tempTexture2 != NULL) {
+            drawPiece(updateRectBoard.x,updateRectBoard.y,tempTexture2);
+        }
+        SDL_RenderPresent(m_renderer);
+    }
+}
+void Screen::movePiece(int x, int y) {
+    if(mouseClick) {
+        //draw/set new square
+        int tempSpot = board.returnSpot(x,y);
+        drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
+        drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+        board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
+
+        //overdraw/erase old square
+        drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
+        board.panel[squareHolded].occpuiedBy = 0;
+
+        //set piece holded to 0/null
+        squareHolded = -1;
+        // pieceHolded.type = 0;
+        // pieceHolded.x = 0;
+        // pieceHolded.y = 0;
+        //render all
+        SDL_RenderPresent(m_renderer);
+    }
+    else {
+        squareHolded = board.returnSpot(x,y);
+        // pieceHolded.type = board.panel[board.returnSpot(x,y)].occpuiedBy;
+        // pieceHolded.x = board.panel[tempSpot].x;
+        // pieceHolded.y = board.panel[tempSpot].y;
+    }
+    mouseClick = !mouseClick;
+}
+
+
+
+
+
+
+
+
+void Screen::drawPiece(int x, int y, SDL_Texture *texture) {
+    updateRectPiece.x = x + 10;
+    updateRectPiece.y = y + 10;
+    SDL_RenderCopy(m_renderer,texture,NULL,&updateRectPiece);
+
+
+}
+// 1 - gray, 2 - orange/green
+void Screen::drawSquare2(int x, int y, int type) {
+
+    updateRectBoard.x = x;
+    updateRectBoard.y = y;
+    if (type == 1) { // draw gray square
+        SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRectBoard);
+    }
+    else { // draw orange/green square
+        SDL_RenderCopy(m_renderer, m_texture, &updateRectBoard, &updateRectBoard);
+    }
+}
+SDL_Texture* Screen::getPieceTexture(int type) {
+    switch (type)
+    {
+    case 1:
+        return wK;
+        break;
+    case 2:
+        return wQ;
+        break;
+    case 3:
+        return wB;
+        break;
+    case 4:
+        return wN;
+        break;
+    case 5:
+        return wR;
+        break;
+    case 6:
+        return wP;
+        break;
+    case -1:
+        return bK;
+        break;  
+    case -2:
+        return bQ;
+        break;
+    case -3:
+        return bB;
+        break;
+    case -4:
+        return bN;
+        break;
+    case -5:
+        return bR;
+        break;
+    case -6:
+        return bP;
+        break;  
+    default:
+        return NULL;
+        break;
+    }
+}
+
 void Screen::renderPieces() {
 
     //rendering black pieces
@@ -343,142 +477,4 @@ void Screen::renderPieces() {
 
     m_destination.x += 100;
     SDL_RenderCopy(m_renderer, wP, NULL, &m_destination);
-}
-void Screen::updateSelection(int x, int y) {
-    int temp = board.returnSpot(x-20,y-20);
-    if(temp != -1) {
-        if(selectedSquare != temp) {
-            prevSquare = selectedSquare;
-            selectedSquare = temp;
-
-            updateRectBoard.x = board.panel[selectedSquare].x;
-            updateRectBoard.y = board.panel[selectedSquare].y;
-            SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRectBoard);
-            tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
-            if(tempTexture2 != NULL) {
-                updateRectPiece.x = updateRectBoard.x + 10;
-                updateRectPiece.y = updateRectBoard.y + 10;
-                SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
-            }
-
-            if(prevSquare != -1) {
-                updateRectBoard.x = board.panel[prevSquare].x;
-                updateRectBoard.y = board.panel[prevSquare].y;
-                SDL_RenderCopy(m_renderer, m_texture, &updateRectBoard, &updateRectBoard);
-                tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
-                if(tempTexture2 != NULL) {
-                    updateRectPiece.x = updateRectBoard.x + 10;
-                    updateRectPiece.y = updateRectBoard.y + 10;
-                    SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
-                }
-            }
-            SDL_RenderPresent(m_renderer);
-        }
-    }
-    else if(temp == -1 && selectedSquare != -1) {
-        prevSquare = selectedSquare;
-        selectedSquare = temp;
-        updateRectBoard.x = board.panel[prevSquare].x;
-        updateRectBoard.y = board.panel[prevSquare].y;
-        SDL_RenderCopy(m_renderer, m_texture, &updateRectBoard, &updateRectBoard);
-        tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
-        if(tempTexture2 != NULL) {
-            updateRectPiece.x = updateRectBoard.x + 10;
-            updateRectPiece.y = updateRectBoard.y + 10;
-            SDL_RenderCopy(m_renderer,tempTexture2,NULL,&updateRectPiece);
-        }
-        SDL_RenderPresent(m_renderer);
-    }
-}
-void Screen::movePiece(int x, int y) {
-    if(mouseClick) {
-        updateSelection(x,y);
-        chessPieceHolded = 0;
-    }
-    else {
-        chessPieceHolded = board.panel[board.returnSpot(x,y)].occpuiedBy;
-    }
-    ///////////////////////////////////
-    //add moving  pieces
-    mouseClick = !mouseClick;
-
-}
-
-// void Screen::drawPiece(int x, int y, SDL_Texture *texture) {
-
-
-
-
-// }
-
-// void Screen::drawSquare2(int x, int y, int type) {
-
-//     updateRectBoard.x = x;
-//     updateRectBoard.y = y;
-//     if 
-//     SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRectBoard);
-
-
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-SDL_Texture* Screen::getPieceTexture(int type) {
-    switch (type)
-    {
-    case 1:
-        return wK;
-        break;
-    case 2:
-        return wQ;
-        break;
-    case 3:
-        return wB;
-        break;
-    case 4:
-        return wN;
-        break;
-    case 5:
-        return wR;
-        break;
-    case 6:
-        return wP;
-        break;
-    case -1:
-        return bK;
-        break;  
-    case -2:
-        return bQ;
-        break;
-    case -3:
-        return bB;
-        break;
-    case -4:
-        return bN;
-        break;
-    case -5:
-        return bR;
-        break;
-    case -6:
-        return bP;
-        break;  
-    default:
-        return NULL;
-        break;
-    }
 }

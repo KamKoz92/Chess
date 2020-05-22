@@ -33,8 +33,13 @@ private:
     SDL_Texture *tempTexture2; //temp piece to draw
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
-    int chessPieceHolded;
-    
+    struct chessPieceHolder{
+        int x;
+        int y;
+        int type;
+    };
+    chessPieceHolder pieceHolded;
+    int squareHolded;
 
 public:
     const static int SCREEN_HEIGHT = 840;
