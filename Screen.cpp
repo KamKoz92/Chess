@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false) {
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false), chessPieceHolded(0) {
     updateRectBoard.h = 100;
     updateRectBoard.w = 100;
     updateRectPiece.h = 80;
@@ -393,10 +393,51 @@ void Screen::updateSelection(int x, int y) {
 void Screen::movePiece(int x, int y) {
     if(mouseClick) {
         updateSelection(x,y);
+        chessPieceHolded = 0;
     }
+    else {
+        chessPieceHolded = board.panel[board.returnSpot(x,y)].occpuiedBy;
+    }
+    ///////////////////////////////////
+    //add moving  pieces
     mouseClick = !mouseClick;
 
 }
+
+// void Screen::drawPiece(int x, int y, SDL_Texture *texture) {
+
+
+
+
+// }
+
+// void Screen::drawSquare2(int x, int y, int type) {
+
+//     updateRectBoard.x = x;
+//     updateRectBoard.y = y;
+//     if 
+//     SDL_RenderCopy(m_renderer, tempTexture1, NULL, &updateRectBoard);
+
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 SDL_Texture* Screen::getPieceTexture(int type) {
     switch (type)
     {

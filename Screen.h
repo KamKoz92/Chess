@@ -29,10 +29,11 @@ private:
     SDL_Texture *wR;
     int selectedSquare;
     int prevSquare;
-    SDL_Texture *tempTexture1;
-    SDL_Texture *tempTexture2;
+    SDL_Texture *tempTexture1; //grey square
+    SDL_Texture *tempTexture2; //temp piece to draw
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
+    int chessPieceHolded;
     
 
 public:
@@ -54,6 +55,8 @@ public:
     void updateSelection(int x, int y);
     SDL_Texture* getPieceTexture(int type);
     void movePiece(int x, int y);
+    void drawPiece(int x, int y, SDL_Texture *texture);
+    void drawSquare2(int x, int y, int type);
 };
 
 #endif /* SCREEN_H */
