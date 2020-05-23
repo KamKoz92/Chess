@@ -57,6 +57,8 @@ Board::~Board() {
 }
 int Board::returnSpot(int x, int y)
 {
+    x -= 20;
+    y -= 20;
     if(x < 0 || x > 799 || y < 0 || y > 799) {
         return -1;
     }

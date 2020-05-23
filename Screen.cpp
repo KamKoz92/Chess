@@ -231,23 +231,17 @@ void Screen::loadPNG() {
 
 
 void Screen::updateSelection(int x, int y) {
-    int temp = board.returnSpot(x-20,y-20);
+    int temp = board.returnSpot(x,y);
     if(temp != -1) {
         if(selectedSquare != temp) {
             prevSquare = selectedSquare;
             selectedSquare = temp;
             drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
-            tempTexture2 = getPieceTexture(board.panel[selectedSquare].occpuiedBy);
-            if(tempTexture2 != NULL) {
-                drawPiece(updateRectBoard.x,updateRectBoard.y,tempTexture2);
-            }
+            drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[selectedSquare].occpuiedBy));
 
             if(prevSquare != -1) {
                 drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
-                tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
-                if(tempTexture2 != NULL) {
-                    drawPiece(updateRectBoard.x,updateRectBoard.y,tempTexture2);
-                }
+                drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
             }
             SDL_RenderPresent(m_renderer);
         }
@@ -263,31 +257,43 @@ void Screen::updateSelection(int x, int y) {
         SDL_RenderPresent(m_renderer);
     }
 }
-void Screen::movePiece(int x, int y) {
+void Screen::movePiece(int x, int y) {\
+    cout << x << ' ' << y << endl;
     if(mouseClick) {
-        //draw/set new square
+        
         int tempSpot = board.returnSpot(x,y);
-        drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
-        drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
-        board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
+        cout << tempSpot << endl;
+        if (tempSpot != squareHolded) {
 
-        //overdraw/erase old square
-        drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
-        board.panel[squareHolded].occpuiedBy = 0;
+            if (board.panel[squareHolded].occpuiedBy == 0) { //if we hold empty square
+                //highlight new square
+                drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
+                drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[tempSpot].occpuiedBy));
+                
+                //unhiglight old empty square
+                drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);      
+            }
+            else {
+                //draw/set new square
+                drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
+                drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+                board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
 
-        //set piece holded to 0/null
-        squareHolded = -1;
-        // pieceHolded.type = 0;
-        // pieceHolded.x = 0;
-        // pieceHolded.y = 0;
+                //overdraw/erase old square
+                drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
+                board.panel[squareHolded].occpuiedBy = 0; 
+            }
+            //set piece holded to 0/null
+            squareHolded = -1;
+        }
         //render all
         SDL_RenderPresent(m_renderer);
     }
     else {
         squareHolded = board.returnSpot(x,y);
-        // pieceHolded.type = board.panel[board.returnSpot(x,y)].occpuiedBy;
-        // pieceHolded.x = board.panel[tempSpot].x;
-        // pieceHolded.y = board.panel[tempSpot].y;
+        cout << squareHolded << endl;
+        cout << "sh occupied by " << board.panel[squareHolded].occpuiedBy << endl;
+
     }
     mouseClick = !mouseClick;
 }
@@ -300,11 +306,14 @@ void Screen::movePiece(int x, int y) {
 
 
 void Screen::drawPiece(int x, int y, SDL_Texture *texture) {
-    updateRectPiece.x = x + 10;
-    updateRectPiece.y = y + 10;
-    SDL_RenderCopy(m_renderer,texture,NULL,&updateRectPiece);
-
-
+    if (texture == NULL) {
+        return;
+    }
+    else {
+        updateRectPiece.x = x + 10;
+        updateRectPiece.y = y + 10;
+        SDL_RenderCopy(m_renderer,texture,NULL,&updateRectPiece);
+    }
 }
 // 1 - gray, 2 - orange/green
 void Screen::drawSquare2(int x, int y, int type) {

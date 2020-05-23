@@ -33,12 +33,6 @@ private:
     SDL_Texture *tempTexture2; //temp piece to draw
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
-    struct chessPieceHolder{
-        int x;
-        int y;
-        int type;
-    };
-    chessPieceHolder pieceHolded;
     int squareHolded;
 
 public:
