@@ -13,6 +13,7 @@ public:
     void setData();
     int returnSpot(int x, int y);
     
+    
     //Special struct for storing each spot information
     struct boardData {
         int x; 

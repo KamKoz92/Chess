@@ -236,44 +236,36 @@ void Screen::updateSelection(int x, int y) {
         if(selectedSquare != temp) {
             prevSquare = selectedSquare;
             selectedSquare = temp;
-            drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
-            drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[selectedSquare].occpuiedBy));
-
-            if(prevSquare != -1) {
-                drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
-                drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+            if (!mouseClick) {
+                drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
+                drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[selectedSquare].occpuiedBy));
+            
+                if(prevSquare != -1) {
+                    drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
+                    drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+                }
+                SDL_RenderPresent(m_renderer);
             }
-            SDL_RenderPresent(m_renderer);
         }
     }
     else if(temp == -1 && selectedSquare != -1) {
         prevSquare = selectedSquare;
         selectedSquare = temp;
-        drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
-        tempTexture2 = getPieceTexture(board.panel[prevSquare].occpuiedBy);
-        if(tempTexture2 != NULL) {
-            drawPiece(updateRectBoard.x,updateRectBoard.y,tempTexture2);
+        if(!mouseClick) {
+            drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
+            if(tempTexture2 != NULL) {
+                drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+            }
+            SDL_RenderPresent(m_renderer);
         }
-        SDL_RenderPresent(m_renderer);
+        
     }
 }
-void Screen::movePiece(int x, int y) {\
-    cout << x << ' ' << y << endl;
-    if(mouseClick) {
-        
-        int tempSpot = board.returnSpot(x,y);
-        cout << tempSpot << endl;
-        if (tempSpot != squareHolded) {
-
-            if (board.panel[squareHolded].occpuiedBy == 0) { //if we hold empty square
-                //highlight new square
-                drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
-                drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[tempSpot].occpuiedBy));
-                
-                //unhiglight old empty square
-                drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);      
-            }
-            else {
+void Screen::movePiece(int x, int y) {
+    int tempSpot = board.returnSpot(x,y);
+    if(tempSpot != -1) {
+        if(mouseClick) {
+            if (tempSpot != squareHolded) {
                 //draw/set new square
                 drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
                 drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
@@ -282,28 +274,20 @@ void Screen::movePiece(int x, int y) {\
                 //overdraw/erase old square
                 drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
                 board.panel[squareHolded].occpuiedBy = 0; 
+
+                //render all
+                SDL_RenderPresent(m_renderer);
             }
             //set piece holded to 0/null
             squareHolded = -1;
+            mouseClick = !mouseClick;   
         }
-        //render all
-        SDL_RenderPresent(m_renderer);
+        else if(board.panel[tempSpot].occpuiedBy != 0) {
+            squareHolded = board.returnSpot(x,y);
+            mouseClick = !mouseClick;
+        }
     }
-    else {
-        squareHolded = board.returnSpot(x,y);
-        cout << squareHolded << endl;
-        cout << "sh occupied by " << board.panel[squareHolded].occpuiedBy << endl;
-
-    }
-    mouseClick = !mouseClick;
 }
-
-
-
-
-
-
-
 
 void Screen::drawPiece(int x, int y, SDL_Texture *texture) {
     if (texture == NULL) {

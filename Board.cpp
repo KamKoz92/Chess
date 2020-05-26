@@ -20,7 +20,7 @@ Board::Board() {
     for (int i = 47; i < 64; i++) {
         panel[i].occupied = true;
     }
-    //occupiedBy legend
+    //occupiedBy
     //0 - "none"
     //1 - white king
     //2 - white queen

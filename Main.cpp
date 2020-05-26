@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
                     screen.movePiece(event.motion.x,event.motion.y);
                 }         
             }
-            else if (event.type == SDL_MOUSEMOTION && !screen.mouseClick) {  
+            else if (event.type == SDL_MOUSEMOTION) {
                 screen.updateSelection(event.motion.x,event.motion.y);
             }
         }
