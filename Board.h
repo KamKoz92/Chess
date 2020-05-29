@@ -14,6 +14,7 @@ public:
     vector<int> avaiableMoves(int spot, int pieceType);
     vector<int> pawnMoves(int spot);
     
+    
     //Special struct for storing each spot information
     struct boardData {
         int x; 

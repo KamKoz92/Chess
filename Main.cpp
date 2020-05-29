@@ -9,6 +9,7 @@ int main(int argc, char *argv[]) {
         cout << "SDL initialization failed." << endl;
     }
     bool flag = false;
+    bool mouseClick = false;
     SDL_Event event;
     while (!flag) {     
     
@@ -19,10 +20,10 @@ int main(int argc, char *argv[]) {
             }
             else if (event.type == SDL_MOUSEBUTTONDOWN) {
                 if (event.button.button == SDL_BUTTON_LEFT) {
-
-                }
+                    screen.movePiece(event.motion.x,event.motion.y);
+                }         
             }
-            else if (event.type == SDL_MOUSEMOTION) {  
+            else if (event.type == SDL_MOUSEMOTION) {
                 screen.updateSelection(event.motion.x,event.motion.y);
             }
         }

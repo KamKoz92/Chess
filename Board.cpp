@@ -21,7 +21,7 @@ Board::Board() {
     for (int i = 47; i < 64; i++) {
         panel[i].occupied = true;
     }
-    //occupiedBy legend
+    //occupiedBy
     //0 - "none"
     //1 - white king
     //2 - white queen
@@ -58,6 +58,8 @@ Board::~Board() {
 }
 int Board::returnSpot(int x, int y)
 {
+    x -= 20;
+    y -= 20;
     if(x < 0 || x > 799 || y < 0 || y > 799) {
         return -1;
     }
