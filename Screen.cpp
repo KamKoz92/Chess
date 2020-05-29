@@ -168,68 +168,6 @@ void Screen::drawSquare(int x, int y, int size, Uint8 red, Uint8 green, Uint8 bl
     }
 }
 
-void Screen::loadPNG() {
-    SDL_Surface *imageSurface1 = IMG_Load("pngs/bB.png");
-    bB = SDL_CreateTextureFromSurface(m_renderer, imageSurface1);
-
-    SDL_Surface *imageSurface2 = IMG_Load("pngs/bK.png");
-    bK = SDL_CreateTextureFromSurface(m_renderer, imageSurface2);
-
-    SDL_Surface *imageSurface3 = IMG_Load("pngs/bN.png");
-    bN = SDL_CreateTextureFromSurface(m_renderer, imageSurface3);
-
-    SDL_Surface *imageSurface4 = IMG_Load("pngs/bP.png");
-    bP = SDL_CreateTextureFromSurface(m_renderer, imageSurface4);
-
-    SDL_Surface *imageSurface5 = IMG_Load("pngs/bQ.png");
-    bQ = SDL_CreateTextureFromSurface(m_renderer, imageSurface5);
-
-    SDL_Surface *imageSurface6 = IMG_Load("pngs/bR.png");
-    bR = SDL_CreateTextureFromSurface(m_renderer, imageSurface6);
-
-    SDL_Surface *imageSurface7 = IMG_Load("pngs/wB.png");
-    wB = SDL_CreateTextureFromSurface(m_renderer, imageSurface7);
-
-    SDL_Surface *imageSurface8 = IMG_Load("pngs/wK.png");
-    wK = SDL_CreateTextureFromSurface(m_renderer, imageSurface8);
-
-    SDL_Surface *imageSurface9 = IMG_Load("pngs/wN.png");
-    wN = SDL_CreateTextureFromSurface(m_renderer, imageSurface9);
-
-    SDL_Surface *imageSurface10 = IMG_Load("pngs/wP.png");
-    wP = SDL_CreateTextureFromSurface(m_renderer, imageSurface10);
-
-    SDL_Surface *imageSurface11 = IMG_Load("pngs/wQ.png");
-    wQ = SDL_CreateTextureFromSurface(m_renderer, imageSurface11);
-
-    SDL_Surface *imageSurface12 = IMG_Load("pngs/wR.png");
-    wR = SDL_CreateTextureFromSurface(m_renderer, imageSurface12);
-   
-    if(imageSurface1 == NULL || imageSurface2 == NULL || 
-    imageSurface3 == NULL || imageSurface4 == NULL || 
-    imageSurface5 == NULL || imageSurface6 == NULL || 
-    imageSurface7 == NULL || imageSurface8 == NULL || 
-    imageSurface9 == NULL || imageSurface10 == NULL || 
-    imageSurface11 == NULL || imageSurface12 == NULL) {
-        cout << "Problem with loading pngs" << endl;
-        return;
-    }
-
-    SDL_FreeSurface(imageSurface1);
-    SDL_FreeSurface(imageSurface2);
-    SDL_FreeSurface(imageSurface3);
-    SDL_FreeSurface(imageSurface4);
-    SDL_FreeSurface(imageSurface5);
-    SDL_FreeSurface(imageSurface6);
-    SDL_FreeSurface(imageSurface7);
-    SDL_FreeSurface(imageSurface8);
-    SDL_FreeSurface(imageSurface9);
-    SDL_FreeSurface(imageSurface10);
-    SDL_FreeSurface(imageSurface11);
-    SDL_FreeSurface(imageSurface12);
-}
-
-
 void Screen::updateSelection(int x, int y) {
     int temp = board.returnSpot(x,y);
     if(temp != -1) {
@@ -261,6 +199,7 @@ void Screen::updateSelection(int x, int y) {
         
     }
 }
+
 void Screen::movePiece(int x, int y) {
     int tempSpot = board.returnSpot(x,y);
     if(tempSpot != -1) {
@@ -284,6 +223,18 @@ void Screen::movePiece(int x, int y) {
         }
         else if(board.panel[tempSpot].occpuiedBy != 0) {
             squareHolded = board.returnSpot(x,y);
+            vector<int> avaMoves = board.avaiableMoves(squareHolded,board.panel[squareHolded].occpuiedBy);
+            if(avaMoves.size() > 0)
+            {
+                for(int i = 0; i < avaMoves.size(); i++)
+                {
+                    cout << avaMoves[i] << ' ';
+                }
+                cout << endl;
+            }
+            else {
+                cout << " no avaiable moves" << endl;
+            }
             mouseClick = !mouseClick;
         }
     }
@@ -299,6 +250,7 @@ void Screen::drawPiece(int x, int y, SDL_Texture *texture) {
         SDL_RenderCopy(m_renderer,texture,NULL,&updateRectPiece);
     }
 }
+
 // 1 - gray, 2 - orange/green
 void Screen::drawSquare2(int x, int y, int type) {
 
@@ -311,6 +263,7 @@ void Screen::drawSquare2(int x, int y, int type) {
         SDL_RenderCopy(m_renderer, m_texture, &updateRectBoard, &updateRectBoard);
     }
 }
+
 SDL_Texture* Screen::getPieceTexture(int type) {
     switch (type)
     {
@@ -470,4 +423,65 @@ void Screen::renderPieces() {
 
     m_destination.x += 100;
     SDL_RenderCopy(m_renderer, wP, NULL, &m_destination);
+}
+
+void Screen::loadPNG() {
+    SDL_Surface *imageSurface1 = IMG_Load("pngs/bB.png");
+    bB = SDL_CreateTextureFromSurface(m_renderer, imageSurface1);
+
+    SDL_Surface *imageSurface2 = IMG_Load("pngs/bK.png");
+    bK = SDL_CreateTextureFromSurface(m_renderer, imageSurface2);
+
+    SDL_Surface *imageSurface3 = IMG_Load("pngs/bN.png");
+    bN = SDL_CreateTextureFromSurface(m_renderer, imageSurface3);
+
+    SDL_Surface *imageSurface4 = IMG_Load("pngs/bP.png");
+    bP = SDL_CreateTextureFromSurface(m_renderer, imageSurface4);
+
+    SDL_Surface *imageSurface5 = IMG_Load("pngs/bQ.png");
+    bQ = SDL_CreateTextureFromSurface(m_renderer, imageSurface5);
+
+    SDL_Surface *imageSurface6 = IMG_Load("pngs/bR.png");
+    bR = SDL_CreateTextureFromSurface(m_renderer, imageSurface6);
+
+    SDL_Surface *imageSurface7 = IMG_Load("pngs/wB.png");
+    wB = SDL_CreateTextureFromSurface(m_renderer, imageSurface7);
+
+    SDL_Surface *imageSurface8 = IMG_Load("pngs/wK.png");
+    wK = SDL_CreateTextureFromSurface(m_renderer, imageSurface8);
+
+    SDL_Surface *imageSurface9 = IMG_Load("pngs/wN.png");
+    wN = SDL_CreateTextureFromSurface(m_renderer, imageSurface9);
+
+    SDL_Surface *imageSurface10 = IMG_Load("pngs/wP.png");
+    wP = SDL_CreateTextureFromSurface(m_renderer, imageSurface10);
+
+    SDL_Surface *imageSurface11 = IMG_Load("pngs/wQ.png");
+    wQ = SDL_CreateTextureFromSurface(m_renderer, imageSurface11);
+
+    SDL_Surface *imageSurface12 = IMG_Load("pngs/wR.png");
+    wR = SDL_CreateTextureFromSurface(m_renderer, imageSurface12);
+   
+    if(imageSurface1 == NULL || imageSurface2 == NULL || 
+    imageSurface3 == NULL || imageSurface4 == NULL || 
+    imageSurface5 == NULL || imageSurface6 == NULL || 
+    imageSurface7 == NULL || imageSurface8 == NULL || 
+    imageSurface9 == NULL || imageSurface10 == NULL || 
+    imageSurface11 == NULL || imageSurface12 == NULL) {
+        cout << "Problem with loading pngs" << endl;
+        return;
+    }
+
+    SDL_FreeSurface(imageSurface1);
+    SDL_FreeSurface(imageSurface2);
+    SDL_FreeSurface(imageSurface3);
+    SDL_FreeSurface(imageSurface4);
+    SDL_FreeSurface(imageSurface5);
+    SDL_FreeSurface(imageSurface6);
+    SDL_FreeSurface(imageSurface7);
+    SDL_FreeSurface(imageSurface8);
+    SDL_FreeSurface(imageSurface9);
+    SDL_FreeSurface(imageSurface10);
+    SDL_FreeSurface(imageSurface11);
+    SDL_FreeSurface(imageSurface12);
 }
