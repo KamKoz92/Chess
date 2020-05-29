@@ -1,17 +1,18 @@
 #ifndef BOARD_H_
 #define BOARD_H_
 
+#include <vector>
+
 class Board {
 private:
-    int a;
     
-
-
 public:
     Board();
     ~Board();
     void setData();
     int returnSpot(int x, int y);
+    vector<int> avaiableMoves(int spot, int pieceType);
+    vector<int> pawnMoves(int spot);
     
     //Special struct for storing each spot information
     struct boardData {

@@ -1,5 +1,6 @@
 #include "Board.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -62,5 +63,50 @@ int Board::returnSpot(int x, int y)
     }
     else {
         return (y / 100)*8 + (x / 100);
+    }
+}
+
+vector<int> Board::avaiableMoves(int spot, int pieceType) {
+
+    switch (pieceType)
+    {
+    case 1:
+        break;
+    case 2:
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    case 5:
+        break;
+    case 6:
+        return pawnMoves(spot);
+        break;
+    case -1:
+        break;
+    case -2:
+        break;
+    case -3:
+        break;
+    case -4:
+        break;
+    case -5:
+        break;
+    case -6:
+        break;
+    default:
+        break;
+    }
+}
+
+vector<int> Board::pawnMoves(int spot) {
+    vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    if(returnSpot(x, y - 100) != -1) {
+        if(panel[returnSpot(x, y - 100)].occpuiedBy == 1) {
+
+        }
     }
 }
