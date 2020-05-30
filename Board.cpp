@@ -425,11 +425,195 @@ vector<int> Board::wBishopMoves(int spot) {
             break;
         }
     }
+
     return moves;
 }
 
 vector<int> Board::wQueenMoves(int spot) {
     vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    int tempSpot;
+
+    //moving forward
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x, y - (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //moving backward
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x, y + (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //moving left
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x - (i * 100), y);
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //moving right
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x + (i * 100), y);
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //upperright move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x + (i * 100), y - (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //upperleft move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x - (i * 100), y - (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //downright move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x + (i * 100), y + (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //downleft move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x - (i * 100), y + (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    break;
+                }
+                else {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
 
     return moves;
 }
@@ -754,6 +938,189 @@ vector<int> Board::bBishopMoves(int spot) {
 }
 vector<int> Board::bQueenMoves(int spot) {
     vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    int tempSpot;
+
+    //moving backward
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x, y - (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //moving forward
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x, y + (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //moving left
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x - (i * 100), y);
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //moving right
+    for(int i = 1; i < 8; i++)
+    {
+        tempSpot = returnSpot(x + (i * 100), y);
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {//if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //upperright move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x + (i * 100), y - (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //upperleft move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x - (i * 100), y - (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //downright move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x + (i * 100), y + (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
+
+    //downleft move
+    for(int i = 1; i < 8; i++) {
+        tempSpot = returnSpot(x - (i * 100), y + (i * 100));
+        if(tempSpot != -1) {
+            if(panel[tempSpot].occpuiedBy == 0) {
+                moves.push_back(tempSpot);
+            }
+            else {
+                if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                    moves.push_back(tempSpot);
+                    break;
+                }
+                else {
+                    break;
+                }
+            }
+        }
+        else {
+            break;
+        }
+    }
 
     return moves;
 }
