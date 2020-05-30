@@ -619,6 +619,7 @@ vector<int> Board::wQueenMoves(int spot) {
 }
 
 vector<int> Board::wKingMoves(int spot) {
+    //ADD restriction to moving on a check square///////////////////////////////////////////////////////////////
     vector<int> moves;
     int x = panel[spot].x;
     int y = panel[spot].y;
@@ -1232,6 +1233,7 @@ vector<int> Board::bQueenMoves(int spot) {
     return moves;
 }
 vector<int> Board::bKingMoves(int spot) {
+    //ADD restriction to moving on a check square///////////////////////////////////////////////////////////////
     vector<int> moves;
     int x = panel[spot].x;
     int y = panel[spot].y;
