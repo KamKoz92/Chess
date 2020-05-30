@@ -249,6 +249,73 @@ vector<int> Board::wRookMoves(int spot) {
 
 vector<int> Board::wKnightMoves(int spot) {
     vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    int tempSpot;
+
+    //upright move
+    tempSpot = returnSpot(x + 100, y - 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //upleft move
+    tempSpot = returnSpot(x - 100, y - 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //downleft move 
+    tempSpot = returnSpot(x - 100, y + 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //downright move 
+    tempSpot = returnSpot(x + 100, y + 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //leftup move
+    tempSpot = returnSpot(x - 200, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //leftdown move
+    tempSpot = returnSpot(x - 200, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //rightup move
+    tempSpot = returnSpot(x + 200, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //rightdown move
+    tempSpot = returnSpot(x + 200, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7)) {
+            moves.push_back(tempSpot);
+        }
+    }
 
     return moves;
 }
@@ -405,6 +472,73 @@ vector<int> Board::bRookMoves(int spot) {
 
 vector<int> Board::bKnightMoves(int spot) {
     vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    int tempSpot;
+
+    //upright move
+    tempSpot = returnSpot(x + 100, y - 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //upleft move
+    tempSpot = returnSpot(x - 100, y - 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //downleft move 
+    tempSpot = returnSpot(x - 100, y + 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //downright move 
+    tempSpot = returnSpot(x + 100, y + 200);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //leftup move
+    tempSpot = returnSpot(x - 200, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //leftdown move
+    tempSpot = returnSpot(x - 200, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //rightup move
+    tempSpot = returnSpot(x + 200, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
+
+    //rightdown move
+    tempSpot = returnSpot(x + 200, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0 || (panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0)) {
+            moves.push_back(tempSpot);
+        }
+    }
 
     return moves;
 }
