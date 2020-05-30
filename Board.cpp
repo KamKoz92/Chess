@@ -620,6 +620,113 @@ vector<int> Board::wQueenMoves(int spot) {
 
 vector<int> Board::wKingMoves(int spot) {
     vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    int tempSpot;
+
+    //upmove
+    tempSpot = returnSpot(x, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //move back 
+    tempSpot = returnSpot(x, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //move left
+    tempSpot = returnSpot(x - 100, y);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //move right 
+    tempSpot = returnSpot(x + 100, y);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //upperright move 
+    tempSpot = returnSpot(x + 100, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //upperleft move 
+    tempSpot = returnSpot(x - 100, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //downright move 
+    tempSpot = returnSpot(x + 100, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //downleft move
+    tempSpot = returnSpot(x - 100, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 0 && panel[tempSpot].occpuiedBy > -7) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
 
     return moves;
 }
@@ -1126,7 +1233,113 @@ vector<int> Board::bQueenMoves(int spot) {
 }
 vector<int> Board::bKingMoves(int spot) {
     vector<int> moves;
+    int x = panel[spot].x;
+    int y = panel[spot].y;
+    int tempSpot;
 
+    //upmove
+    tempSpot = returnSpot(x, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //move back 
+    tempSpot = returnSpot(x, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //move left
+    tempSpot = returnSpot(x - 100, y);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //move right 
+    tempSpot = returnSpot(x + 100, y);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //upperright move 
+    tempSpot = returnSpot(x + 100, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //upperleft move 
+    tempSpot = returnSpot(x - 100, y - 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //downright move 
+    tempSpot = returnSpot(x + 100, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
+
+    //downleft move
+    tempSpot = returnSpot(x - 100, y + 100);
+    if(tempSpot != -1) {
+        if(panel[tempSpot].occpuiedBy == 0) {
+            moves.push_back(tempSpot);
+        }
+        else {
+            if(panel[tempSpot].occpuiedBy < 7 && panel[tempSpot].occpuiedBy > 0) {
+                moves.push_back(tempSpot);
+            }
+        }
+    }
 
     return moves;
 }
