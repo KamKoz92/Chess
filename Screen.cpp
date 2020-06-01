@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Board.h"
+#include <algorithm>
 
 using namespace std;
 
-Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false), squareHolded(-1) {
+Screen::Screen() : m_window(NULL), m_renderer(NULL), m_texture(NULL), m_buffer1(NULL), selectedSquare(-1), prevSquare(-1), mouseClick(false), squareHolded(-1), avaiableMoves(30,-1) {
     updateRectBoard.h = 100;
     updateRectBoard.w = 100;
     updateRectPiece.h = 80;
@@ -214,27 +215,48 @@ void Screen::movePiece(int x, int y) {
                 drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
                 board.panel[squareHolded].occpuiedBy = 0; 
 
-                //render all
-                SDL_RenderPresent(m_renderer);
+                //delete current move from all avaiable moves
+                vector<int>::iterator it = std::find(avaiableMoves.begin(),avaiableMoves.end(), tempSpot);
+                *it = -1;      
             }
+
+            //delete highlight of all moves
+            for(int i = 0; i < 30; i++) {
+                if(avaiableMoves[i] != -1) {
+                    drawSquare2(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y,2);
+                    if(board.panel[avaiableMoves[i]].occpuiedBy != 0 ) {
+                        drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
+                    }
+                    avaiableMoves[i] = -1;
+                }
+            }
+            //render all
+            SDL_RenderPresent(m_renderer);
+
             //set piece holded to 0/null
             squareHolded = -1;
             mouseClick = !mouseClick;   
+
         }
         else if(board.panel[tempSpot].occpuiedBy != 0) {
             squareHolded = board.returnSpot(x,y);
-            vector<int> avaMoves = board.avaiableMoves(squareHolded,board.panel[squareHolded].occpuiedBy);
-            if(avaMoves.size() > 0)
-            {
-                for(int i = 0; i < avaMoves.size(); i++)
-                {
-                    cout << avaMoves[i] << ' ';
+            fitMoves(board.avaiableMoves(squareHolded,board.panel[squareHolded].occpuiedBy));
+            for(int i = 0; i < 30; i++) {
+                if(avaiableMoves[i] == -1) {
+                    break;
                 }
-                cout << endl;
+                else {
+                    cout << avaiableMoves[i] << ' ';
+                    drawSquare2(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y,1);
+                    if(board.panel[avaiableMoves[i]].occpuiedBy != 0 ) {
+                        drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
+                    }
+                }
+                
             }
-            else {
-                cout << " no avaiable moves" << endl;
-            }
+            cout << endl;
+            SDL_RenderPresent(m_renderer);
+
             mouseClick = !mouseClick;
         }
     }
@@ -485,3 +507,11 @@ void Screen::loadPNG() {
     SDL_FreeSurface(imageSurface11);
     SDL_FreeSurface(imageSurface12);
 }
+
+void Screen::fitMoves(vector<int> moves) {
+    for(int i = 0; i < moves.size(); i++) {
+        avaiableMoves[i] = moves[i];
+    }
+}
+
+

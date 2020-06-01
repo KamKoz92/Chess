@@ -34,6 +34,7 @@ private:
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
     int squareHolded;
+    vector<int> avaiableMoves;
 
 public:
     const static int SCREEN_HEIGHT = 840;
@@ -56,6 +57,7 @@ public:
     void movePiece(int x, int y);
     void drawPiece(int x, int y, SDL_Texture *texture);
     void drawSquare2(int x, int y, int type);
+    void fitMoves(vector<int> moves);
 };
 
 #endif /* SCREEN_H */
