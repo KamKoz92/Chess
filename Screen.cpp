@@ -170,11 +170,10 @@ void Screen::drawSquare(int x, int y, int size, Uint8 red, Uint8 green, Uint8 bl
 }
 
 void Screen::updateSelection(int x, int y) {
-    int temp = board.returnSpot(x,y);
-    if(temp != -1) {
-        if(selectedSquare != temp) {
-            prevSquare = selectedSquare;
-            selectedSquare = temp;
+    prevSquare = selectedSquare;
+    selectedSquare = board.returnSpot(x,y);
+    if(selectedSquare != -1) {
+        if(selectedSquare != prevSquare) {
             if (!mouseClick) {
                 drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
                 drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[selectedSquare].occpuiedBy));
@@ -183,35 +182,34 @@ void Screen::updateSelection(int x, int y) {
                     drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
                     drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
                 }
-                SDL_RenderPresent(m_renderer);
             }
-            // else {
-            //     if(inMoveRange(selectedSquare)) {
-            //         drawPiece(board.panel[selectedSquare].x,board.panel[selectedSquare].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
-            //     }
-            //     if(inMoveRange(prevSquare)) {
-            //         drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,1);
-            //     }
-            // }
-            
-        }
-    }
-    else if(temp == -1 && selectedSquare != -1) {
-        prevSquare = selectedSquare;
-        selectedSquare = temp;
-        if(!mouseClick) {
-            drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
-            if(tempTexture2 != NULL) {
-                drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+            else {
+                if(inMoveRange(selectedSquare)) {
+                    drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
+                    drawPiece(board.panel[selectedSquare].x,board.panel[selectedSquare].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+                }
+
+                if(inMoveRange(prevSquare)) {
+                    drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,1);
+                    if(board.panel[prevSquare].occpuiedBy != 0) {
+                        drawPiece(board.panel[prevSquare].x,board.panel[prevSquare].y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+                    }
+                }
             }
             SDL_RenderPresent(m_renderer);
         }
-        // else {
-        //     if(inMoveRange(prevSquare)) {
-        //         drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,1);
-        //     }
-        // }
-        
+    }
+    else if(selectedSquare == -1 && prevSquare != -1) {
+        if(!mouseClick) {
+            drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
+            drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));  
+        }
+        else {
+            if(inMoveRange(prevSquare)) {
+                drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,1);
+            }
+        }
+        SDL_RenderPresent(m_renderer);
     }
 }
 
@@ -238,8 +236,8 @@ void Screen::movePiece(int x, int y) {
 
             if (tempSpot != squareHolded) {
                 //draw/set new square
-                drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
-                drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+                // drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
+                // drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
                 board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
 
                 //overdraw/erase old square
@@ -533,9 +531,8 @@ void Screen::fitMoves(vector<int> moves) {
 }
 
 bool Screen::inMoveRange(int square) {
-
-    for(int i = 0; i < avaiableMoves.size(); i++) {
-        if(square == avaiableMoves[i])
+    for(int i = 0; i < 30; i++) {
+        if(square == avaiableMoves[i] && square != -1)
             return true;
     }
     return false;

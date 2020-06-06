@@ -30,7 +30,7 @@ private:
     int selectedSquare;
     int prevSquare;
     SDL_Texture *tempTexture1; //grey square
-    SDL_Texture *tempTexture2; //temp piece to draw
+    SDL_Texture *tempTexture2; //temp piece to draw // to delete
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
     int squareHolded;
