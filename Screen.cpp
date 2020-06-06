@@ -116,10 +116,19 @@ void Screen::update() {
 
 void Screen::SetBoard() {
     tempBuffer = new Uint32[10000];
-    Uint32 c = Color(191,191,191);
+    Uint32 g = Color(191,191,191);
+    Uint32 b = Color(0,0,0);
     for (int i = 0; i < 10000; i++) {
-        tempBuffer[i] = c;
+        if((0 <= i && i < 100) || (9900 <= i && i < 10000) || (i % 100 == 0) || ((i+1) % 100 == 0) ) {
+            tempBuffer[i] = b;
+        }
+        else {
+            tempBuffer[i] = g;
+        }
+        
     }
+    //m_buffer1[(y * SCREEN_WIDTH) + x] = Color(red,green,blue);
+
     //Graphical initialization of the board
     m_buffer1 = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH];
     Uint32 col = Color(80,151,53);
