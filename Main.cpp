@@ -29,5 +29,6 @@ int main(int argc, char *argv[]) {
         }
     }
     screen.close();
+    cout << "Closing program" << endl;
     return 0;
 }

@@ -58,6 +58,7 @@ public:
     void drawPiece(int x, int y, SDL_Texture *texture);
     void drawSquare2(int x, int y, int type);
     void fitMoves(vector<int> moves);
+    bool inMoveRange(int square);
 };
 
 #endif /* SCREEN_H */
