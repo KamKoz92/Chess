@@ -226,41 +226,41 @@ void Screen::movePiece(int x, int y) {
     int tempSpot = board.returnSpot(x,y);
     if(tempSpot != -1) {
         if(mouseClick) {
-
-            //delete highlight of all moves
-            for(int i = 0; i < 30; i++) {
-                if(avaiableMoves[i] != -1) {
-                    if(avaiableMoves[i] != tempSpot) {
-                        drawSquare2(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y,2);
-                        if(board.panel[avaiableMoves[i]].occpuiedBy != 0 ) {
-                            drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
+            if(inMoveRange(tempSpot) || tempSpot == squareHolded) {
+                //delete highlight of all moves
+                for(int i = 0; i < 30; i++) {
+                    if(avaiableMoves[i] != -1) {
+                        if(avaiableMoves[i] != tempSpot) {
+                            drawSquare2(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y,2);
+                            if(board.panel[avaiableMoves[i]].occpuiedBy != 0 ) {
+                                drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
+                            }
                         }
+                        avaiableMoves[i] = -1;
                     }
-                    avaiableMoves[i] = -1;
+                    else {
+                        break;
+                    }
                 }
-                else {
-                    break;
+
+                if (tempSpot != squareHolded) {
+                    //draw/set new square
+                    // drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
+                    // drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+                    board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
+
+                    //overdraw/erase old square
+                    drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
+                    board.panel[squareHolded].occpuiedBy = 0;    
                 }
+
+                //render all
+                SDL_RenderPresent(m_renderer);
+
+                //set piece holded to 0/null
+                squareHolded = -1;
+                mouseClick = !mouseClick;   
             }
-
-            if (tempSpot != squareHolded) {
-                //draw/set new square
-                // drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
-                // drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
-                board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
-
-                //overdraw/erase old square
-                drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
-                board.panel[squareHolded].occpuiedBy = 0;    
-            }
-
-            //render all
-            SDL_RenderPresent(m_renderer);
-
-            //set piece holded to 0/null
-            squareHolded = -1;
-            mouseClick = !mouseClick;   
-
         }
         else if(board.panel[tempSpot].occpuiedBy != 0) {
             squareHolded = tempSpot;
