@@ -1,8 +1,8 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
 #include <memory>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL_image.h"
 #include "Board.h"
 
 class Screen {
