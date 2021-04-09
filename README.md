@@ -1,5 +1,6 @@
 # ChessGame
- Simple chess game
+ Chess game currently without AI
+ 
 # ###### ###
 
 
