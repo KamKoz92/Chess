@@ -16,8 +16,8 @@
                 "-lSDL2main",
                 "-lSDL2",
                 "-lSDL2_image",
-                "-IE:\\Workspace\\CppWorkspace\\SDL2-2.0.10\\x86_64-w64-mingw32\\include",
-                "-LE:\\Workspace\\CppWorkspace\\SDL2-2.0.10\\x86_64-w64-mingw32\\lib",
+                "-ID:\\Pulpit\\SDL2-2.0.10\\x86_64-w64-mingw32\\include",
+                "-LD:\\Pulpit\\SDL2-2.0.10\\x86_64-w64-mingw32\\lib",
             ],
             "group": {
                 "kind": "build",

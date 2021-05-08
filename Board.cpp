@@ -619,7 +619,7 @@ vector<int> Board::wQueenMoves(int spot) {
 }
 
 vector<int> Board::wKingMoves(int spot) {
-    //ADD restriction to moving on a check square///////////////////////////////////////////////////////////////
+    //ADD restriction to moving on a checkmate square///////////////////////////////////////////////////////////////
     vector<int> moves;
     int x = panel[spot].x;
     int y = panel[spot].y;

@@ -116,10 +116,19 @@ void Screen::update() {
 
 void Screen::SetBoard() {
     tempBuffer = new Uint32[10000];
-    Uint32 c = Color(191,191,191);
+    Uint32 g = Color(191,191,191);
+    Uint32 b = Color(0,0,0);
     for (int i = 0; i < 10000; i++) {
-        tempBuffer[i] = c;
+        if((0 <= i && i < 100) || (9900 <= i && i < 10000) || (i % 100 == 0) || ((i+1) % 100 == 0) ) {
+            tempBuffer[i] = b;
+        }
+        else {
+            tempBuffer[i] = g;
+        }
+        
     }
+    //m_buffer1[(y * SCREEN_WIDTH) + x] = Color(red,green,blue);
+
     //Graphical initialization of the board
     m_buffer1 = new Uint32[SCREEN_HEIGHT * SCREEN_WIDTH];
     Uint32 col = Color(80,151,53);
@@ -170,11 +179,10 @@ void Screen::drawSquare(int x, int y, int size, Uint8 red, Uint8 green, Uint8 bl
 }
 
 void Screen::updateSelection(int x, int y) {
-    int temp = board.returnSpot(x,y);
-    if(temp != -1) {
-        if(selectedSquare != temp) {
-            prevSquare = selectedSquare;
-            selectedSquare = temp;
+    prevSquare = selectedSquare;
+    selectedSquare = board.returnSpot(x,y);
+    if(selectedSquare != -1) {
+        if(selectedSquare != prevSquare) {
             if (!mouseClick) {
                 drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
                 drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[selectedSquare].occpuiedBy));
@@ -183,21 +191,34 @@ void Screen::updateSelection(int x, int y) {
                     drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
                     drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
                 }
-                SDL_RenderPresent(m_renderer);
             }
-        }
-    }
-    else if(temp == -1 && selectedSquare != -1) {
-        prevSquare = selectedSquare;
-        selectedSquare = temp;
-        if(!mouseClick) {
-            drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
-            if(tempTexture2 != NULL) {
-                drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+            else {
+                if(inMoveRange(selectedSquare)) {
+                    drawSquare2(board.panel[selectedSquare].x,board.panel[selectedSquare].y,1);
+                    drawPiece(board.panel[selectedSquare].x,board.panel[selectedSquare].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+                }
+
+                if(inMoveRange(prevSquare)) {
+                    drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,1);
+                    if(board.panel[prevSquare].occpuiedBy != 0) {
+                        drawPiece(board.panel[prevSquare].x,board.panel[prevSquare].y,getPieceTexture(board.panel[prevSquare].occpuiedBy));
+                    }
+                }
             }
             SDL_RenderPresent(m_renderer);
         }
-        
+    }
+    else if(selectedSquare == -1 && prevSquare != -1) {
+        if(!mouseClick) {
+            drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,2);
+            drawPiece(updateRectBoard.x,updateRectBoard.y,getPieceTexture(board.panel[prevSquare].occpuiedBy));  
+        }
+        else {
+            if(inMoveRange(prevSquare)) {
+                drawSquare2(board.panel[prevSquare].x,board.panel[prevSquare].y,1);
+            }
+        }
+        SDL_RenderPresent(m_renderer);
     }
 }
 
@@ -205,44 +226,50 @@ void Screen::movePiece(int x, int y) {
     int tempSpot = board.returnSpot(x,y);
     if(tempSpot != -1) {
         if(mouseClick) {
-            if (tempSpot != squareHolded) {
-                //draw/set new square
-                drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
-                drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
-                board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
-
-                //overdraw/erase old square
-                drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
-                board.panel[squareHolded].occpuiedBy = 0; 
-
-                //delete current move from all avaiable moves
-                vector<int>::iterator it = std::find(avaiableMoves.begin(),avaiableMoves.end(), tempSpot);
-                *it = -1;      
-            }
-
-            //delete highlight of all moves
-            for(int i = 0; i < 30; i++) {
-                if(avaiableMoves[i] != -1) {
-                    drawSquare2(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y,2);
-                    if(board.panel[avaiableMoves[i]].occpuiedBy != 0 ) {
-                        drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
+            if(inMoveRange(tempSpot) || tempSpot == squareHolded) {
+                //delete highlight of all moves
+                for(int i = 0; i < 30; i++) {
+                    if(avaiableMoves[i] != -1) {
+                        if(avaiableMoves[i] != tempSpot) {
+                            drawSquare2(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y,2);
+                            if(board.panel[avaiableMoves[i]].occpuiedBy != 0 ) {
+                                drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
+                            }
+                        }
+                        avaiableMoves[i] = -1;
                     }
-                    avaiableMoves[i] = -1;
+                    else {
+                        break;
+                    }
                 }
+
+                if (tempSpot != squareHolded) {
+                    //draw/set new square
+                    // drawSquare2(board.panel[tempSpot].x,board.panel[tempSpot].y,1);
+                    // drawPiece(board.panel[tempSpot].x,board.panel[tempSpot].y,getPieceTexture(board.panel[squareHolded].occpuiedBy));
+                    board.panel[tempSpot].occpuiedBy = board.panel[squareHolded].occpuiedBy;
+
+                    //overdraw/erase old square
+                    drawSquare2(board.panel[squareHolded].x,board.panel[squareHolded].y,2);
+                    board.panel[squareHolded].occpuiedBy = 0;    
+                }
+
+                //render all
+                SDL_RenderPresent(m_renderer);
+
+                //set piece holded to 0/null
+                squareHolded = -1;
+                mouseClick = !mouseClick;   
             }
-            //render all
-            SDL_RenderPresent(m_renderer);
-
-            //set piece holded to 0/null
-            squareHolded = -1;
-            mouseClick = !mouseClick;   
-
         }
         else if(board.panel[tempSpot].occpuiedBy != 0) {
-            squareHolded = board.returnSpot(x,y);
+            squareHolded = tempSpot;
             fitMoves(board.avaiableMoves(squareHolded,board.panel[squareHolded].occpuiedBy));
             for(int i = 0; i < 30; i++) {
-                if(avaiableMoves[i] == -1) {
+                if(avaiableMoves[i] < 0  || avaiableMoves[i] > 63) {
+                    if(avaiableMoves[i] != -1) {
+                        cout << "Nonposible move" << endl;
+                    }
                     break;
                 }
                 else {
@@ -252,11 +279,9 @@ void Screen::movePiece(int x, int y) {
                         drawPiece(board.panel[avaiableMoves[i]].x, board.panel[avaiableMoves[i]].y, getPieceTexture(board.panel[avaiableMoves[i]].occpuiedBy));
                     }
                 }
-                
             }
             cout << endl;
             SDL_RenderPresent(m_renderer);
-
             mouseClick = !mouseClick;
         }
     }
@@ -514,4 +539,10 @@ void Screen::fitMoves(vector<int> moves) {
     }
 }
 
-
+bool Screen::inMoveRange(int square) {
+    for(int i = 0; i < 30; i++) {
+        if(square == avaiableMoves[i] && square != -1)
+            return true;
+    }
+    return false;
+}

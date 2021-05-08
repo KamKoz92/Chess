@@ -1,8 +1,8 @@
 #ifndef SCREEN_H_
 #define SCREEN_H_
-#include <SDL2/SDL.h>
+#include "SDL2/SDL.h"
 #include <memory>
-#include <SDL2/SDL_image.h>
+#include "SDL2/SDL_image.h"
 #include "Board.h"
 
 class Screen {
@@ -30,7 +30,7 @@ private:
     int selectedSquare;
     int prevSquare;
     SDL_Texture *tempTexture1; //grey square
-    SDL_Texture *tempTexture2; //temp piece to draw
+    SDL_Texture *tempTexture2; //temp piece to draw // to delete
     SDL_Rect updateRectBoard;
     SDL_Rect updateRectPiece;
     int squareHolded;
@@ -58,6 +58,7 @@ public:
     void drawPiece(int x, int y, SDL_Texture *texture);
     void drawSquare2(int x, int y, int type);
     void fitMoves(vector<int> moves);
+    bool inMoveRange(int square);
 };
 
 #endif /* SCREEN_H */
